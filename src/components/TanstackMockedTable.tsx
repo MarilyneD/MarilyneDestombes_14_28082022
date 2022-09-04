@@ -112,7 +112,7 @@ function Table() {
   }, [setStartingRow,setEndingRow]);
 
 
-
+  const tableLenght = table.getRowModel().rows.length;
 
   const previousFunction = () => {
     if (startingRow - numberOfRows < 0) {
@@ -155,7 +155,7 @@ function Table() {
                 }
               }}
             >
-              {[20, 50, 100].map((pageSize) => (
+              {[20, 50, 100, table.getRowModel().rows.length].map((pageSize) => (
                 <option key={pageSize} value={pageSize}>
                   {pageSize}
                 </option>

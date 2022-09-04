@@ -13,7 +13,7 @@ export const employeesSlice = createSlice({
     },
 
     addEmployeeToList: (state, action) => {
-      state.employeesList.body.firstName = action.payload;
+      state.employeesList.push(action.payload);
     },
   },
 });
