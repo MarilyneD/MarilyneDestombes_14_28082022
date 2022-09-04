@@ -1,0 +1,62 @@
+.footer {
+    display: block;
+    float: none;
+    position: absolute;
+    top: calc(100% - 120px);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    row-gap: 40px;
+    background: linear-gradient(90deg,#3e5d08 30%, #93ad18);
+    height: 120px;
+    color: #FFFFFF;
+    @include verticalCenter;
+   // font-family: $font-2;
+    font-size: 24px;
+}
+
+
+@media screen and (max-width: 920px) {
+    .footer {
+        font-size: 22px;
+        padding-left: 5%;
+        height: 180px;
+        padding-top: 20px;
+
+        img {
+            width: 20%;
+        }
+    }
+
+}
+
+
+@media screen and (max-width: 500px) {
+    .footer {
+        font-size: 18px;
+        padding-left: 3%;
+        padding-right: 3%;
+        height: 150px;
+        padding-top: 20px;
+
+        img {
+            width: 25%;
+        }
+    }
+
+}
+
+
+@media screen and (max-width: 400px) {
+    .footer {
+        height: 130px;
+        font-size: 15px;
+        padding-bottom: 15px;
+
+        img {
+            width: 22%;
+        }
+    }
+
+}

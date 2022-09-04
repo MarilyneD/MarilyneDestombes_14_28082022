@@ -1,0 +1,21 @@
+
+.create-employee-container {
+    display: flex;
+    flex-direction: column;
+    padding-left: 190px;
+    align-items: center;
+    justify-content: center;
+    @include verticalCenter;
+
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 10px;
+}
+
+.address {
+    margin-top: 10px;
+}
