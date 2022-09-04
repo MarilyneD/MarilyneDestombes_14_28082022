@@ -1,20 +1,23 @@
-.footer {
+
+.footer{
     display: block;
     float: none;
-    position: absolute;
+    position: fixed; //position: fixed is a combination of both absolute and sticky
     top: calc(100% - 120px);
     bottom: 0;
     left: 0;
     right: 0;
     flex-direction: column;
+    height:100%;
     row-gap: 40px;
     background: linear-gradient(90deg,#3e5d08 30%, #93ad18);
-    height: 120px;
+    height: $footer-height ;
     color: #FFFFFF;
     @include verticalCenter;
-   // font-family: $font-2;
     font-size: 24px;
 }
+
+
 
 
 @media screen and (max-width: 920px) {

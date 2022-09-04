@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import signReducer from "../feature/signSlice";
+import employeesReducer from "../feature/employeesSlice";
 
 export default configureStore({
-  reducer: { sign: signReducer },
+  reducer: { employees: employeesReducer },
 });

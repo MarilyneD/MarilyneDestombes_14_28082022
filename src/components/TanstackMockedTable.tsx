@@ -1,4 +1,4 @@
-import React, { useMemo, useReducer, useState } from 'react'
+import React, { useEffect, useMemo, useReducer, useState } from 'react'
 import {
   ColumnDef,
   flexRender,
@@ -8,14 +8,16 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { makeData, Person } from '../data/makeData.ts'
+import { useSelector } from 'react-redux'
 
 
 
 
 function Table() {
     const rerender = useReducer(() => ({}), {})[1]
-  
+
     const [sorting, setSorting] = useState<SortingState>([])
+  
   
     const columns = useMemo<ColumnDef<Person>[]>(
       () => [
@@ -78,9 +80,9 @@ function Table() {
       ],
       []
     )
-  
-    const [data, setData] = useState(() => makeData(20))
-    const refreshData = () => setData(() => makeData(20))
+    const globalStore = useSelector(state => state.employees)
+    const [data, setData] = useState(globalStore.employeesList)
+    
   
     const table = useReactTable({
       data,
@@ -93,23 +95,92 @@ function Table() {
       getSortedRowModel: getSortedRowModel(),
       debugTable: true,
     })
+
+
+  
+    const [numberOfRows, setNumberOfRows] = useState(10);
+    const [startingRow, setStartingRow] = useState(0);
+    const [endingRow, setEndingRow] = useState(startingRow+numberOfRows);
+  //   if (startingRow <0) {setStartingRow(0)};
+  // if (endingRow > table.getRowModel().rows.length ) {setEndingRow(table.getRowModel().rows.length) }
+    
+
+    useEffect(() => {
+      if (startingRow <0) {setStartingRow(0)};
+      if (endingRow > table.getRowModel().rows.length ) {setEndingRow(table.getRowModel().rows.length) }
+      
+  }, [setStartingRow,setEndingRow]);
+
+
+
+
+  const previousFunction = () => {
+    if (startingRow - numberOfRows < 0) {
+      setStartingRow(0);
+    } else {
+      setStartingRow(startingRow - numberOfRows);
+    }
+    if (!(endingRow - numberOfRows <= 0)) {
+      setEndingRow(endingRow - numberOfRows);
+    }
+    
+  };
+
+
+  const nextFunction = () => {
+    if (!(startingRow + numberOfRows >= table.getRowModel().rows.length)) {setStartingRow(startingRow + numberOfRows);}
+    if (endingRow + numberOfRows > table.getRowModel().rows.length) {
+      setEndingRow(table.getRowModel().rows.length);
+    } else {
+      setEndingRow(endingRow + numberOfRows);
+    }
+  };
+
+
   
     return (
       <div className="p-2">
         <div className="h-2" />
+        <div className="table-header">
+          <div className="show-select-menu">
+            Show
+            <select
+              className="show-select-menu-button"
+              value={numberOfRows}
+              onChange={(e) => {
+                {
+                  setStartingRow(0);
+                  setNumberOfRows(Number(e.target.value));
+                  setEndingRow(Number(e.target.value));
+                }
+              }}
+            >
+              {[20, 50, 100].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  {pageSize}
+                </option>
+              ))}
+            </select>
+            entries
+          </div>
+
+          <div className="search-menu">
+            search : <input />
+          </div>
+        </div>
         <table>
           <thead>
-            {table.getHeaderGroups().map(headerGroup => (
+            {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
+                {headerGroup.headers.map((header) => {
                   return (
                     <th key={header.id} colSpan={header.colSpan}>
                       {header.isPlaceholder ? null : (
                         <div
                           {...{
                             className: header.column.getCanSort()
-                              ? 'cursor-pointer select-none'
-                              : '',
+                              ? "cursor-pointer select-none"
+                              : "",
                             onClick: header.column.getToggleSortingHandler(),
                           }}
                         >
@@ -118,13 +189,13 @@ function Table() {
                             header.getContext()
                           )}
                           {{
-                            asc: ' 🔼',
-                            desc: ' 🔽',
+                            asc: " 🔼",
+                            desc: " 🔽",
                           }[header.column.getIsSorted() as string] ?? null}
                         </div>
                       )}
                     </th>
-                  )
+                  );
                 })}
               </tr>
             ))}
@@ -132,11 +203,11 @@ function Table() {
           <tbody>
             {table
               .getRowModel()
-              .rows.slice(0, 30)
-              .map(row => {
+              .rows.slice(startingRow, endingRow)
+              .map((row) => {
                 return (
                   <tr key={row.id}>
-                    {row.getVisibleCells().map(cell => {
+                    {row.getVisibleCells().map((cell) => {
                       return (
                         <td key={cell.id}>
                           {flexRender(
@@ -144,29 +215,42 @@ function Table() {
                             cell.getContext()
                           )}
                         </td>
-                      )
+                      );
                     })}
                   </tr>
-                )
+                );
               })}
           </tbody>
         </table>
-        <div>{table.getRowModel().rows.length} Rows</div>
-        <div>
-          <button onClick={() => rerender()}>Force Rerender</button>
-        </div>
-        <div>
-          <button onClick={() => refreshData()}>Refresh Data</button>
+        <div className="table-footer">
+          <div className="prev-next">
+            <button onClick={() => previousFunction()}>
+              Previous {numberOfRows} Rows
+            </button>
+          </div>
+          <div className="showing">
+            {" "}
+            Showing {startingRow} to {endingRow} of{" "}
+            {table.getRowModel().rows.length} entries
+          </div>
+
+          <div className="prev-next">
+            <button onClick={() => nextFunction()}>
+              Next {numberOfRows} Rows
+            </button>
+          </div>
+
+          {/* <div> startingRow = {startingRow}, endingRow = {endingRow}, number of rows = {numberOfRows}</div> */}
         </div>
         {/* <pre>{JSON.stringify(sorting, null, 2)}</pre> */}
       </div>
-    )
+    );
   }
   
 
 
 
-const TanstackTable = () => {
+const TanstackMockedTable = () => {
    
     return (
         <div>
@@ -175,4 +259,4 @@ const TanstackTable = () => {
     );
 };
 
-export default TanstackTable;
+export default TanstackMockedTable;

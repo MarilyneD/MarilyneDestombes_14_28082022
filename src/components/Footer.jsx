@@ -2,9 +2,11 @@ import React from 'react';
 
 const Footer = () => {
     return (
+        
         <footer className='footer'>
             <p className='footer-text'>Copyright 2020 Wealth Health</p>
         </footer>
+        
     );
 };
 

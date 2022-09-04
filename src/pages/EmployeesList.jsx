@@ -1,4 +1,5 @@
 import React from 'react';
+import TanstackMockedTable from '../components/TanstackMockedTable.tsx';
 import TanstackTable from '../components/TanstackTable.tsx';
 
 const EmployeesList = () => {
@@ -18,8 +19,10 @@ const columnsTTTTTZTZTZT = [
 
     return (
 
-        <div>
-                <TanstackTable /> 
+        <div className ='employees-list-container'>
+                
+                <TanstackMockedTable/>
+                {/* <TanstackTable />  */}
         </div>
     );
 };

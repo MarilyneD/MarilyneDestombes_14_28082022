@@ -1,0 +1,44 @@
+.table-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 18px;
+    padding-top: 10px;
+}
+
+.show-select-menu {
+    padding-bottom: 15px;
+
+
+    .show-select-menu-button {
+        color: #355506;
+        font-size: 16px;
+    }
+}
+
+.table-footer {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 18px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+
+.prev-next {
+    padding-left: 0px;
+
+    button {
+        padding-left: 0px;
+        font-size: 16px;
+        color: #355506;
+        // background-color: #93ad18;
+    }
+}
+
+;
+
+
+.showing {}

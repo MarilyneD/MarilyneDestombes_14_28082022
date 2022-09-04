@@ -1,8 +1,30 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { addemployeesList } from '../feature/employeesSlice';
+
 
 const Home = () => {
 
+  const [mainData, setMainData] = useState([]);
+  const dispatch = useDispatch();
+  
+
+   
+  useEffect(() => {
+    (async () => {
+      const responseData = await axios.get("/mocked-data/mockedEmployeesData.json").then((res) => res.data).catch(function (error) {
+        if (error.response) {
+          console.log("error.response.data", error.response.data);
+        }
+      });
+      dispatch(addemployeesList(responseData));
+      setMainData(responseData);
+    })();
+  }, []);
+
+   
 
 
     return (
