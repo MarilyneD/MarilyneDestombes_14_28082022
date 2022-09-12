@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { addEmployeeToList } from '../feature/employeesSlice';
 import states from '../data/stateList';
+import USACities from '../data/USACities';
 import DatePicker from 'react-date-picker';
+import Modal from '../components/Modal';
+
 
 const CreateEmployee = () => {
       const dispatch = useDispatch();
@@ -13,15 +17,34 @@ const CreateEmployee = () => {
       const [firstName, setfirstName] = useState('');
       const [lastName, setLastName] = useState('');
       const [department, setDepartment] = useState('');
-      const [dateOfBirth, setDateOfBirth] = useState('');
-      const [startDate, setStartDate] = useState('');
-      const [street, setStreet] = useState('');
-      const [city, setCity] = useState('');
+      const [dateOfBirth, setDateOfBirth] = useState(new Date());
+      const [startDate, setStartDate] = useState(new Date());
       const [state, setState] = useState('');
+      const [cities, setCities]=useState(USACities);
+      const [city, setCity] = useState('');
+      const [street, setStreet] = useState('');
       const [zipCode, setzipCode] = useState('');
-      const [value1, onChange1] = useState(new Date());
-      const [value2, onChange2] = useState(new Date());
+      const [employeeCreated,setEmployeeCreated] = useState(false);
+      const [nbOfEmployeeCreated, setNbOfEmployeeCreated] = useState(0);
+      const [stateList, setStateList] = useState(['']);
+      const [error, setError] =useState(false);
+      
+  let navigate = useNavigate();
+    useEffect(() => { if(!globalStore.employeesList){navigate("/")}       
+        }, []);
   
+
+useEffect(() => {
+  setCities([]);
+  setCities(USACities.filter(city => city.state=== state));
+}, [state,setState]);
+
+
+useEffect(() => {
+  setError(false);
+ }, [firstName, setfirstName,lastName, department, setDepartment, setLastName,street, setStreet,zipCode, setzipCode, city, setCity, state,setState]);
+
+
 
     
   const handleFirstName = async (e) => {
@@ -35,26 +58,12 @@ const CreateEmployee = () => {
   }
 };
 
-  
-  const handleLastName = async (e) => {
+
+const handleLastName = async (e) => {
      e.preventDefault();
      let value = e.target.value;
      setLastName(value);
   };
-
-
-  const handleBirthDate = async (e) => {
-    e.preventDefault();
-    let value = e.target.value;
-    setDateOfBirth(value);
- };
-
-
- const handleStartDate = async (e) => {
-  e.preventDefault();
-  let value = e.target.value;
-  setStartDate(value);
-};
 
 const handleStreet = async (e) => {
   e.preventDefault();
@@ -62,21 +71,17 @@ const handleStreet = async (e) => {
   setStreet(value);
 };
 
-
 const handleCity = async (e) => {
   e.preventDefault();
   let value = e.target.value;
   setCity(value);
 };
 
-
-
 const handleState = async (e) => {
   e.preventDefault();
   let value = e.target.value;
   setState(value);
 };
-
 
 const handleZipCode = async (e) => {
   e.preventDefault();
@@ -94,30 +99,69 @@ const handleDepartment = async (e) => {
 
 const handleSaveEmployee = async (e) => {
   e.preventDefault();
-  let newid=0;
-  const getMaxId = () =>{
-    const ids = globalStore.employeesList.map(employee => employee.id);
-    console.log('ids',ids);
-    newid=Math.max(...ids)+1;
-    console.log(newid);
+  let newid = 0;
+
+  const getMaxId = () => {
+    let ids = globalStore.employeesList.map((employee) => employee.id);
+    //console.log("ids", ids);
+    newid = Math.max(...ids) + 1;
+    //console.log(newid);
   };
   getMaxId();
 
-  const formData = {
-    'id': newid,
-    'firstName' : firstName,
-    'lastName' : lastName,
-    'department' : department,
-    'startDate' : startDate,
-    'dateOfBirth' : dateOfBirth,
-    'street' : street,
-    'city' : city,
-    'state' : state,
+  let formData = {
+    id: newid,
+    firstName: firstName,
+    lastName: lastName,
+    department: department,
+    startDate: startDate.toLocaleDateString(),
+    dateOfBirth: dateOfBirth.toLocaleDateString(),
+    street: street,
+    city: city,
+    state: state,
+    zipCode: zipCode,
+  };
+
+  
+  const employeeStillExist = () => {
+
+    function withoutProperty(obj, property) {  
+      const { [property]: unused, ...rest } = obj
+    return rest
+  }
+   let employeesListNoID = globalStore.employeesList.map((employee) => withoutProperty(employee, 'id'));
+   let formDataNoID = withoutProperty(formData, 'id');
+   let found = employeesListNoID.find(employee => employee === formDataNoID);
+
+    console.log("employeeListNoID",employeesListNoID.slice(199,210));
+    console.log("formDataNoID",formDataNoID);
+    console.log("found", found);
+  
+  };
+  employeeStillExist();
+
+   
+ 
 
 
-}
-console.log(formData);
-dispatch(addEmployeeToList(formData));
+  if (formData.firstName.length === 0 || formData.lastName.length === 0) {console.log(formData);
+    setError(true);
+  } else {
+    console.log(formData);
+    dispatch(addEmployeeToList(formData));
+
+    const sendNewEmployee = async () => {
+      axios
+        .post("http://localhost:8000/newemployee", formData)
+        .then((res) => res.data)
+        .catch((error) => {
+          console.log("error while sending new employee", error);
+        });
+    };
+    sendNewEmployee();
+    setEmployeeCreated(true);
+    setNbOfEmployeeCreated(nbOfEmployeeCreated + 1);
+  }
 };
 
 
@@ -148,51 +192,38 @@ dispatch(addEmployeeToList(formData));
 
           <div className="input-wrapper formData">
             <label htmlFor="date-of-birth">Date of Birth</label>
-            <input
-              type="text"
-              id="date-of-birth"
-              onChange={(e) => handleBirthDate(e)}
-            />
+           
             <DatePicker
             calendarAriaLabel="Toggle calendar"
             clearAriaLabel="Clear value"
             dayAriaLabel="Day"
             monthAriaLabel="Month"
             nativeInputAriaLabel="Date"
-            onChange={onChange1}
-            value={value1}
+            onChange={setDateOfBirth}
+            value={dateOfBirth}
             yearAriaLabel="Year"
+            minDate={new Date(1950, 1, 1)}
+            maxDate={new Date(2006, 0, 1)}
           />
+
           </div>
 
           <div className="input-wrapper formData">
             <label htmlFor="start-date">Start Date</label>
-            <input
-              type="text"
-              id="start-date"
-              onChange={(e) => handleStartDate(e)}
-            />
+    
             <DatePicker
             calendarAriaLabel="Toggle calendar"
             clearAriaLabel="Clear value"
             dayAriaLabel="Day"
             monthAriaLabel="Month"
             nativeInputAriaLabel="Date"
-            onChange={onChange2}
-            value={value2}
+            onChange={setStartDate}
+            value={startDate}
             yearAriaLabel="Year"
           />
           </div>
           <fieldset className="address">
             <legend>Address</legend>
-            <div className="input-wrapper formData">
-            <label htmlFor="street">Street</label>
-            <input id="street" type="text" onChange={(e) => handleStreet(e)} />
-            </div>
-            <div className="input-wrapper formData">
-            <label htmlFor="city">City</label>
-            <input id="city" type="text" onChange={(e) => handleCity(e)} />
-            </div>
             <div className="input-wrapper formData">
               <label htmlFor="state">State</label>
             <select name="state" id="state" onChange={(e) => handleState(e)}>
@@ -204,6 +235,23 @@ dispatch(addEmployeeToList(formData));
               ))}
             </select>
             </div>
+            <div className="input-wrapper formData">
+            <label htmlFor="city">City</label>
+            <select name="city" id="city" onChange={(e) => handleCity(e)}>
+              {cities.map((city,index) => (
+                <option key={index} value={city.city}>
+                  {" "}
+                  {city.city}
+                </option>
+              ))}
+            </select>
+            </div>
+            <div className="input-wrapper formData">
+            <label htmlFor="street">Street</label>
+            <input id="street" type="text" onChange={(e) => handleStreet(e)} />
+            </div>
+            
+            
             <div className="input-wrapper formData">
               <label htmlFor="zip-code">Zip Code</label>
               <input
@@ -231,9 +279,8 @@ dispatch(addEmployeeToList(formData));
           <input className="save-button" type="submit" value="Save" />
           </div>
         </form>
-        <span id="confirmation" className="modal">
-          Employee Created!
-        </span>
+        < Modal modalVisible={employeeCreated} nbOfEmployeeCreated={nbOfEmployeeCreated}/>
+        {error && (<span className='form-error'> formulary not correctly completed / empty field</span>)} 
       </div>
     );
 };

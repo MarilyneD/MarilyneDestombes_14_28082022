@@ -1,29 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import TanstackMockedTable from '../components/TanstackMockedTable.tsx';
-import TanstackTable from '../components/TanstackTable.tsx';
+
 
 const EmployeesList = () => {
+    
+    const globalStore = useSelector(state => state.employees)
+    let navigate = useNavigate();
+    useEffect(() => { if(!globalStore.employeesList){navigate("/")}       
+      }, []);
 
 
-const columnsTTTTTZTZTZT = [
-    { title: 'First Name', data: 'firstName' },
-    { title: 'Last Name', data: 'lastName' },
-    { title: 'Start Date', data: 'startDate' },
-    { title: 'Department', data: 'department' },
-    { title: 'Date of Birth', data: 'dateOfBirth' },
-    { title: 'Street', data: 'street' },
-    { title: 'City', data: 'city' },
-    { title: 'State', data: 'state' },
-    { title: 'Zip Code', data: 'zipCode' },
-]
 
     return (
-
-        <div className ='employees-list-container'>
-                
-                <TanstackMockedTable/>
-                {/* <TanstackTable />  */}
-        </div>
+      <div className="employees-list-container">
+        <TanstackMockedTable />
+      </div>
     );
 };
 

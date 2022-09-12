@@ -34,10 +34,6 @@ const VerticalNav = () => {
         </ul>
 
 
-
-
-
-
       </nav>
     );
 };

@@ -9,15 +9,15 @@ import {
 } from '@tanstack/react-table'
 import { makeData, Person } from '../data/makeData.ts'
 import { useSelector } from 'react-redux'
-
+import axios from 'axios'
 
 
 
 function Table() {
-    const rerender = useReducer(() => ({}), {})[1]
 
+
+    const rerender = useReducer(() => ({}), {})[1]
     const [sorting, setSorting] = useState<SortingState>([])
-  
   
     const columns = useMemo<ColumnDef<Person>[]>(
       () => [
@@ -80,9 +80,26 @@ function Table() {
       ],
       []
     )
+
     const globalStore = useSelector(state => state.employees)
+    const initialData = useState(globalStore.employeesList)
     const [data, setData] = useState(globalStore.employeesList)
+    //const [data, setData] = useState('')
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const responseData = await axios.get("http://localhost:8000/employeeslist").then((res) => res.data).catch(function (error) {
+  //       if (error.response) {
+  //         console.log("error.response.data", error.response.data);
+  //       }
+  //     });
+  //     setData(responseData);
+  //   })();
+  // }, []);
+
     
+
+
   
     const table = useReactTable({
       data,
@@ -95,48 +112,48 @@ function Table() {
       getSortedRowModel: getSortedRowModel(),
       debugTable: true,
     })
-
-
   
-    const [numberOfRows, setNumberOfRows] = useState(10);
+    const [numberOfRows, setNumberOfRows] = useState(20);
     const [startingRow, setStartingRow] = useState(0);
     const [endingRow, setEndingRow] = useState(startingRow+numberOfRows);
-  //   if (startingRow <0) {setStartingRow(0)};
-  // if (endingRow > table.getRowModel().rows.length ) {setEndingRow(table.getRowModel().rows.length) }
-    
-
-    useEffect(() => {
-      if (startingRow <0) {setStartingRow(0)};
-      if (endingRow > table.getRowModel().rows.length ) {setEndingRow(table.getRowModel().rows.length) }
-      
-  }, [setStartingRow,setEndingRow]);
-
-
+  
   const tableLenght = table.getRowModel().rows.length;
 
   const previousFunction = () => {
-    if (startingRow - numberOfRows < 0) {
-      setStartingRow(0);
-    } else {
-      setStartingRow(startingRow - numberOfRows);
-    }
-    if (!(endingRow - numberOfRows <= 0)) {
-      setEndingRow(endingRow - numberOfRows);
-    }
-    
+    if (startingRow - numberOfRows < 0) {setStartingRow(0);} 
+     else {setStartingRow(startingRow - numberOfRows);}
+    if (!(endingRow - numberOfRows <= 0)) {setEndingRow(endingRow - numberOfRows);}
   };
 
 
   const nextFunction = () => {
     if (!(startingRow + numberOfRows >= table.getRowModel().rows.length)) {setStartingRow(startingRow + numberOfRows);}
     if (endingRow + numberOfRows > table.getRowModel().rows.length) {
-      setEndingRow(table.getRowModel().rows.length);
-    } else {
-      setEndingRow(endingRow + numberOfRows);
-    }
+      setEndingRow(table.getRowModel().rows.length);}
+       else {setEndingRow(endingRow + numberOfRows);}
   };
 
-
+  
+const searchEmployeesList = async (e) => {
+  e.preventDefault();
+  console.log("====================NOUVEAUCLICK=========================");
+  console.log("initial data",initialData);
+  let value = e.target.value.toString();
+  let exp = new RegExp('' + value + '', "i");
+  let reducedData = initialData[0].filter(
+    (employee) =>
+      exp.test(employee.firstName) ||
+      exp.test(employee.lastName) ||
+      exp.test(employee.city) ||
+      exp.test(employee.state)
+  );
+  setData(reducedData);
+  console.log("regex",exp);
+  console.log("reduced List",reducedData)
+  setStartingRow(0);
+  setEndingRow(numberOfRows);
+  rerender();
+};
   
     return (
       <div className="p-2">
@@ -164,8 +181,12 @@ function Table() {
             entries
           </div>
 
-          <div className="search-menu">
-            search : <input />
+          <div className="search-menu">search : 
+          <input
+              type="text"
+              id="search-list"
+              onChange={(e) => searchEmployeesList(e)}
+            />
           </div>
         </div>
         <table>
@@ -230,7 +251,7 @@ function Table() {
           </div>
           <div className="showing">
             {" "}
-            Showing {startingRow} to {endingRow} of{" "}
+            Showing {startingRow} to {Math.min(endingRow,table.getRowModel().rows.length)} of{" "}
             {table.getRowModel().rows.length} entries
           </div>
 
@@ -239,10 +260,7 @@ function Table() {
               Next {numberOfRows} Rows
             </button>
           </div>
-
-          {/* <div> startingRow = {startingRow}, endingRow = {endingRow}, number of rows = {numberOfRows}</div> */}
         </div>
-        {/* <pre>{JSON.stringify(sorting, null, 2)}</pre> */}
       </div>
     );
   }

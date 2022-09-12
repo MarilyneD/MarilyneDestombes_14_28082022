@@ -1,62 +1,79 @@
-
 .create-employee-container {
-    display: flex;
-    flex-direction: column;
-    padding-left: 190px;
-    align-items: center;
-    justify-content: center;
-    @include verticalCenter;
-
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 190px;
+  align-items: center;
+  justify-content: center;
+  @include verticalCenter;
+  width: 100%;
 }
 
-#create-employee{width : 350px;
-padding-bottom: 30px;
+#create-employee {
+  width: 350px;
+  padding-bottom: 30px;
 
-.input-wrapper{width : 350px}}
+  .input-wrapper {
+    width: 350px
+  }
+}
 
 
 label {
-    display: block;
-    margin-top: 1rem;
-    margin-bottom: 10px;
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 10px;
 }
 
-input{ width : 350px; }
+input {
+  width: 350px;
+}
 
 .address {
-    margin-top: 10px;
-    padding-bottom: 20px;
+  margin-top: 10px;
+  padding-bottom: 20px;
 }
 
-#department{padding-bottom: 0px;}
-
+#department {
+  padding-bottom: 0px;
+}
 
 
 .formData[data-error]::after {
-    content: attr(data-error);
-    font-size: 0.6em;
-    color: #e54858;
-    display: block;
-    margin-top: 7px;
-    margin-bottom: 7px;
-    text-align: left;
-    line-height: 0.3;
-    opacity: 0;
-    transition: 0.3s;
-  }
-  .formData[data-error-visible="true"]::after {
-    opacity: 1;
-  }
-  .formData[data-error-visible="true"] .text-control {
-    border: 2px solid #e54858;
-  }
-  
-  .formData[data-error-visible="false"] .text-control {
-    border: 2px solid #3876ac;
-  }
+  content: attr(data-error);
+  font-size: 0.6em;
+  color: #e54858;
+  display: block;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  text-align: left;
+  line-height: 0.3;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.formData[data-error-visible="true"]::after {
+  opacity: 1;
+}
+
+.formData[data-error-visible="true"] .text-control {
+  border: 2px solid #e54858;
+}
+
+.formData[data-error-visible="false"] .text-control {
+  border: 2px solid #3876ac;
+}
 
 
 
-  .save-button-container{padding-top: 20px;}
-  .save-button{padding-top: 0px;}
+.save-button-container {
+  padding-top: 20px;
+}
+
+.save-button {
+  padding-top: 0px;
+}
+
+
+.form-error {
+  color: red;
+}
