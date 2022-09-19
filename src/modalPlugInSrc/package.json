@@ -1,0 +1,12 @@
+{
+  "name": "marilyne-simplemodal-react",
+  "version": "1.0.0",
+  "description": "simple modal with text arguments and onchange function",
+  "main": "index.js",
+  "style": "index.css",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marilyne Destombes",
+  "license": "ISC"
+}

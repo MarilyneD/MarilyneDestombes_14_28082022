@@ -9,7 +9,7 @@ const EmployeesList = () => {
     const globalStore = useSelector(state => state.employees)
     let navigate = useNavigate();
     useEffect(() => { if(!globalStore.employeesList){navigate("/")}       
-      }, []);
+      });
 
 
 

@@ -1,38 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 
-const Modal = ({ modalVisible, nbOfEmployeeCreated }) => {
-  const [isActive, setIsActive] = useState(false);
+const Modal = ({ modalVisible, mainTexT, childrenText }) => {
+  const [isActive, setIsActive] = useState(modalVisible);
+  const ref = useRef(null);
+
   const handleCloseModal = async (e) => {
-    setIsActive(false);
     e.preventDefault();
+    setIsActive(false);
     console.log("création employee, isactive ?", isActive);
   };
 
   useEffect(() => {
     setIsActive(modalVisible);
-  }, [modalVisible, nbOfEmployeeCreated]);
+  }, [modalVisible]);
 
-  // console.log(
-  //   "property received in Modal component modalVisible",
-  //   modalVisible,
-  //   "isActive",
-  //   isActive
-  //);
+  
+
+  const handelKeydown = useCallback((e) => {
+      if (e.key === 'Escape') return setIsActive(false);console.log("escape pressed");
+  }, [setIsActive])
+
+  
+  useEffect(() => {
+      if (isActive) {
+          document.addEventListener('keydown', handelKeydown);
+      } else {
+          document.removeEventListener('keydown', handelKeydown)
+      }
+      return () => {
+          document.removeEventListener('keydown', handelKeydown)
+      }
+  }, [isActive, handelKeydown, ref])
+
+  //style={{ display: isActive ? "block" : "none" }}
+
+
 
   return (
-    
-      <div className="modal" style={{ display: isActive ? "block" : "none" }}>
+    isActive && (
+      <div className="modal" ref={ref}>
         <div className="modal-content">
           <div className="close-container">
             <span className="close" onClick={handleCloseModal}>
               &times;
             </span>
           </div>
-          <p>Employee Created !</p>
-          <p>{nbOfEmployeeCreated} Employees Created this session</p>
+          <p>{mainTexT}</p>
+          <p>{childrenText}</p>
         </div>
-      </div>
+      </div>)
    
   );
 };

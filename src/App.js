@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
-import Header from "./components/Header";
 import Home from "./pages/Home";
 import Notfound from "./pages/Notfound";
 import EmployeesList from "./pages/EmployeesList";

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer, useState } from 'react'
+import React, { useMemo, useReducer, useState } from 'react'
 import {
   ColumnDef,
   flexRender,
@@ -7,9 +7,8 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table'
-import { makeData, Person } from '../data/makeData.ts'
 import { useSelector } from 'react-redux'
-import axios from 'axios'
+
 
 
 
@@ -84,23 +83,7 @@ function Table() {
     const globalStore = useSelector(state => state.employees)
     const initialData = useState(globalStore.employeesList)
     const [data, setData] = useState(globalStore.employeesList)
-    //const [data, setData] = useState('')
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const responseData = await axios.get("http://localhost:8000/employeeslist").then((res) => res.data).catch(function (error) {
-  //       if (error.response) {
-  //         console.log("error.response.data", error.response.data);
-  //       }
-  //     });
-  //     setData(responseData);
-  //   })();
-  // }, []);
-
-    
-
-
-  
+      
     const table = useReactTable({
       data,
       columns,
@@ -117,7 +100,7 @@ function Table() {
     const [startingRow, setStartingRow] = useState(0);
     const [endingRow, setEndingRow] = useState(startingRow+numberOfRows);
   
-  const tableLenght = table.getRowModel().rows.length;
+  //const tableLenght = table.getRowModel().rows.length;
 
   const previousFunction = () => {
     if (startingRow - numberOfRows < 0) {setStartingRow(0);} 

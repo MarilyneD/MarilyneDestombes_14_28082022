@@ -1,5 +1,5 @@
 .modal {
-    display: block; /* Hidden by default */
+    display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
@@ -16,10 +16,9 @@
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
-    border: 2px solid $color-2;
+    border: 2px solid #355506;
     border-radius: 10px;
     width: 60%; /* Could be more or less, depending on screen size */
-    p{padding-top: 15px;}
   }
   
   /* The Close Button */
@@ -29,16 +28,18 @@
     height : 30px;
     display: flex;
     float: right;
-    background-color: $color-2;
+    background-color: #355506;
     border-radius: 100%;
     align-content: center;
     }
 
   .close {
-    color: $color-1;
+    color: #93ad18;
     margin-left: auto;
     margin-right: auto;
-    @include verticalCenter;
+    display: flex;
+  justify-content: center;
+  align-items: center;    
     font-size: 28px;
     font-weight: bold;
   }

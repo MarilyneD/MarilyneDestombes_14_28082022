@@ -3,20 +3,29 @@
   flex-direction: column;
   padding-left: 190px;
   align-items: center;
-  justify-content: center;
-  @include verticalCenter;
+  //justify-content: center;
+  //@include verticalCenter;
+  padding-top: 55px;
   width: 100%;
+  color :white;
+  h2{ padding-bottom: 20px; color:#355506;padding-top: 12px;}
+  input{width : 80%;border-radius: 5px;}
 }
 
 #create-employee {
   width: 350px;
   padding-bottom: 30px;
+  background: linear-gradient(#93ad18, #355506);
+  border-radius: 5px;
+  
 
   .input-wrapper {
-    width: 350px
+    width: 350px;
+    padding-bottom: 20px;
   }
 }
 
+.datepicker-style { background: white;color:#355506;}
 
 label {
   display: block;
@@ -28,9 +37,16 @@ input {
   width: 350px;
 }
 
+.first-name{ margin-top: 30px;}
+.last-name{ margin-top: 0px;}
+
 .address {
+  display: inline-block;
+  width : 90px;
   margin-top: 10px;
   padding-bottom: 20px;
+  padding-right: -50px;
+
 }
 
 #department {
@@ -77,3 +93,6 @@ input {
 .form-error {
   color: red;
 }
+
+.modal-style { 
+  color: #355506;}
