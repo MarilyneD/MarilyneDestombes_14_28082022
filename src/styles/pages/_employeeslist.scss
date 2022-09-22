@@ -28,3 +28,17 @@
     position: absolute;
     z-index: -1;   
   }
+
+  .employees-list-title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   font-size: 20px;
+   font-weight: bolder;
+   //  transform: scaleX(1.5);
+   padding-bottom: 30px;
+
+   img{ padding-right: 30px;}
+
+  }

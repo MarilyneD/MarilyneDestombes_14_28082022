@@ -14,7 +14,7 @@ const CreateEmployee = () => {
       const dispatch = useDispatch();
       const globalStore = useSelector(state => state.employees);
       const regexName = /^[a-zA-Z-\s]+$/;
-      const [firstName, setfirstName] = useState('');
+      const [firstName, setFirstName] = useState('');
       const [lastName, setLastName] = useState('');
       const [department, setDepartment] = useState('');
       const [dateOfBirth, setDateOfBirth] = useState(new Date());
@@ -40,7 +40,7 @@ useEffect(() => {
 useEffect(() => {
   setError(false);
   setEmployeeCreated(false);
- }, [firstName, setfirstName,lastName, department, setDepartment, setLastName,street, setStreet,zipCode, setZipCode, city, setCity, state,setState]);
+ }, [firstName, setFirstName,lastName, department, setDepartment, setLastName,street, setStreet,zipCode, setZipCode, city, setCity, state,setState]);
 
 
     
@@ -48,7 +48,7 @@ useEffect(() => {
      e.preventDefault();
      let value = e.target.value;
      if (value.trim().length >= 2 && regexName.test(value)) {
-     setfirstName(value);} 
+     setFirstName(value);} 
 };
 
 
@@ -103,7 +103,7 @@ const handleSaveEmployee = async (e) => {
   };
   getMaxId();
 
-  let formData = {
+  let employeeFormularyData = {
     id: newid,
     firstName: firstName,
     lastName: lastName,
@@ -116,15 +116,15 @@ const handleSaveEmployee = async (e) => {
     zipCode: zipCode,
   };
 
-  if (formData.firstName.length === 0 || formData.lastName.length === 0) {console.log(formData);
+  if (employeeFormularyData.firstName.length === 0 || employeeFormularyData.lastName.length === 0) {console.log(employeeFormularyData);
     setError(true);
   } else {
-    console.log(formData);
-    dispatch(addEmployeeToList(formData));
+    console.log(employeeFormularyData);
+    dispatch(addEmployeeToList(employeeFormularyData));
 
     const sendNewEmployee = async () => {
       axios
-        .post("http://localhost:8000/newemployee", formData)
+        .post("http://localhost:8000/newemployee", employeeFormularyData)
         .then((res) => res.data)
         .catch((error) => {
           console.log("error while sending new employee", error);
@@ -133,6 +133,7 @@ const handleSaveEmployee = async (e) => {
     sendNewEmployee();
     setEmployeeCreated(true);
     setNbOfEmployeeCreated(nbOfEmployeeCreated + 1);
+    setFirstName("");
   }
 };
 

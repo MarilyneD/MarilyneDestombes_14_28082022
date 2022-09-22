@@ -15,7 +15,7 @@ const ModalPlugIn = ({ modalVisible, mainTexT, childrenText }) => {
     setIsActive(modalVisible);
   }, [modalVisible]);
 
-  const handelKeydown = useCallback(
+  const handleKeydown = useCallback(
     (e) => {
       if (e.key === "Escape") return setIsActive(false);
     },
@@ -24,14 +24,14 @@ const ModalPlugIn = ({ modalVisible, mainTexT, childrenText }) => {
 
   useEffect(() => {
     if (isActive) {
-      document.addEventListener("keydown", handelKeydown);
+      document.addEventListener("keydown", handleKeydown);
     } else {
-      document.removeEventListener("keydown", handelKeydown);
+      document.removeEventListener("keydown", handleKeydown);
     }
     return () => {
-      document.removeEventListener("keydown", handelKeydown);
+      document.removeEventListener("keydown", handleKeydown);
     };
-  }, [isActive, handelKeydown, ref]);
+  }, [isActive, handleKeydown, ref]);
 
   return (
     <div

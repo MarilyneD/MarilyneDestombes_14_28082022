@@ -15,6 +15,7 @@ const EmployeesList = () => {
 
     return (
       <div className="employees-list-container">
+        <div className='employees-list-title'><img src="/img/employeeslist-dark-green.svg" alt="" />Current employee</div>
         <TanstackMockedTable />
       </div>
     );

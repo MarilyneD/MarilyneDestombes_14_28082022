@@ -111,9 +111,7 @@ function Table() {
 
   const nextFunction = () => {
     if (!(startingRow + numberOfRows >= table.getRowModel().rows.length)) {setStartingRow(startingRow + numberOfRows);}
-    if (endingRow + numberOfRows > table.getRowModel().rows.length) {
-      setEndingRow(table.getRowModel().rows.length);}
-       else {setEndingRow(endingRow + numberOfRows);}
+       setEndingRow(endingRow + numberOfRows);
   };
 
   
@@ -134,6 +132,7 @@ const searchEmployeesList = async (e) => {
   console.log("regex",exp);
   console.log("reduced List",reducedData)
   setStartingRow(0);
+  setNumberOfRows(20);
   setEndingRow(numberOfRows);
   rerender();
 };
@@ -155,7 +154,7 @@ const searchEmployeesList = async (e) => {
                 }
               }}
             >
-              {[20, 50, 100, table.getRowModel().rows.length].map((pageSize) => (
+              {[20, 40, 100, table.getRowModel().rows.length].map((pageSize) => (
                 <option key={pageSize} value={pageSize}>
                   {pageSize}
                 </option>
@@ -170,7 +169,7 @@ const searchEmployeesList = async (e) => {
               id="search-list"
               onChange={(e) => searchEmployeesList(e)}
             />
-          </div>
+        </div>
         </div>
         <table>
           <thead>
