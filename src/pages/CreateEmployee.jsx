@@ -10,6 +10,7 @@ import DropDown from '../components/DropDown';
 import ModalPlugIn from 'marilyne-simplemodal-react';
 
 
+
 const CreateEmployee = () => {
       const dispatch = useDispatch();
       const globalStore = useSelector(state => state.employees);
@@ -133,7 +134,7 @@ const handleSaveEmployee = async (e) => {
     sendNewEmployee();
     setEmployeeCreated(true);
     setNbOfEmployeeCreated(nbOfEmployeeCreated + 1);
-    setFirstName("");
+    //setFirstName("");
   }
 };
 
@@ -257,7 +258,9 @@ const handleSaveEmployee = async (e) => {
           modalVisible={employeeCreated}
           mainTexT={"Employee Created !"}
           childrenText={nbOfEmployeeCreated + " Employees Created this session"}
-        /></div>
+        />
+             
+        </div>
         {error && (
           <span className="form-error">
             {" "}
