@@ -171,7 +171,7 @@ const searchEmployeesList = async (e) => {
             />
         </div>
         </div>
-        <table>
+        <table className='table'>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -254,7 +254,7 @@ const TanstackMockedTable = () => {
    
     return (
         <div>
-            <Table />
+             <Table /> 
         </div>
     );
 };

@@ -1,3 +1,22 @@
+.table {
+    border: 1px solid green;
+    border-spacing: 0px;
+
+    thead {
+        color: #FFF;
+        background-color: #93ad18FF;
+    }
+
+    tbody {
+        tr {
+            &:nth-of-type(even) {
+                background: #93ad1833;
+            }
+        }
+    }
+
+}
+
 .table-header {
     display: flex;
     flex-direction: row;
@@ -41,4 +60,4 @@
 ;
 
 
-.showing {}
+//.showing {}
